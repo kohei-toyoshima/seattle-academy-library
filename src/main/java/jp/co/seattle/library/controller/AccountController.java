@@ -59,11 +59,46 @@ public class AccountController {
 
         // TODO バリデーションチェック、パスワード一致チェック実装
 
+        //メールアドレスがメール形式でない場合
+        if (!email.matches("^([a-zA-Z0-9])+([a-zA-Z0-9\\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\\._-]+)+$")) {
+            //エラー表示
+            model.addAttribute("errorLetter", "メール形式で入力してください");
+            //遷移してほしい画面のjsp名
+            return "createAccount";
+        }
+        //パスワードが半角英数でなかった場合
+        if (!password.matches("^[A-Za-z0-9]+$")) {
+            //エラー表示
+            model.addAttribute("errorPW", "半角英数字で入力してください");
+            //遷移してほしい画面のjsp名
+            return "createAccount";
+        }
+        //確認用パスワードのどちらかが半角英数でなかった場合
+        if (!passwordForCheck.matches("^[A-Za-z0-9]+$")) {
+            //エラー表示
+            model.addAttribute("errorPWFC", "半角英数字で入力してください");
+            //遷移してほしい画面のjsp名
+            return "createAccount";
+        }
+
+        //パスワードと確認用パスワードが一致していない場合
+        if (!password.equals(passwordForCheck)) {
+            //エラー表示
+            model.addAttribute("errorMismatch", "パスワードが不一致です");
+            //遷移してほしい画面のjsp名
+            return "createAccount";
+
+        }
+
+
+
         userInfo.setPassword(password);
         usersService.registUser(userInfo);
-
+        
         model.addAttribute("bookList", booksService.getBookList());
         return "home";
     }
+
+
 
 }
