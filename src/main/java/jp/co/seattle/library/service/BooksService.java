@@ -31,9 +31,9 @@ public class BooksService {
      */
     public List<BookInfo> getBookList() {
 
-        // TODO 取得したい情報を取得するようにSQLを修正
+        //取得したい情報を取得するようにSQLを修正
         List<BookInfo> getedBookList = jdbcTemplate.query(
-                "select * from books",
+                "select title, author, publisher from books order by title asc",
                 new BookInfoRowMapper());
 
         return getedBookList;
