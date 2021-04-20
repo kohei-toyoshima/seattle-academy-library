@@ -46,8 +46,8 @@ public class LoginController {
 
         UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
 
-        //アカウントが存在しないまたはメールアドレスが一致しない場合
-        if (selectedUserInfo == null || !selectedUserInfo.getEmail().equals(email)) {
+        //アカウントが存在しない場合
+        if (selectedUserInfo == null) {
             model.addAttribute("notAccount", "アカウントが存在しません");
             return "login";
         }
