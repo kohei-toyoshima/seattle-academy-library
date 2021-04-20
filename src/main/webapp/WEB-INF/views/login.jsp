@@ -30,11 +30,13 @@
                         <input type="text" class="input" name="email" id="email" autocomplete="off" required/>
                         <label class="label">パスワード</label>
                         <input type="password" class="input" id="password" name="password" required/>
-
                         <input type="submit" class="button primary" value="ログイン" />
-                         <c:if test="${!empty errorMessage}">
-							 <div class="error">${errorMessage}</div>
-						</c:if>
+                       	<c:if test="${!empty notAccount}">
+                        	<div class="error">${notAccount}</div>
+                        </c:if>
+                        <c:if test="${!empty mismatchMailPass}">
+                        	<div class="error">${mismatchMailPass}</div>
+                        </c:if>
 
                     </form>
                 </div>

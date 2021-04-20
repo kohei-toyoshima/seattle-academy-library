@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.co.seattle.library.dto.UserInfo;
 import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.UsersService;
 
@@ -43,11 +44,19 @@ public class LoginController {
             @RequestParam("password") String password,
             Model model) {
 
-        // TODO 下記のコメントアウトを外してサービスクラスを使用してください。
-//        UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
+        UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
 
-        // TODO パスワードとメールアドレスの組み合わせ存在チェック実装
-        
+        //アカウントが存在しない場合
+        if (selectedUserInfo == null) {
+            model.addAttribute("notAccount", "アカウントが存在しません");
+            return "login";
+        }
+
+        //パスワードが一致しない場合
+        if (!selectedUserInfo.getPassword().equals(password)) {
+            model.addAttribute("mismatchMailPass", "パスワードが一致しません");
+            return "login";
+        }
 
 
         // 本の情報を取得して画面側に渡す
