@@ -42,6 +42,14 @@
                 </div>
                 <div class="content_right">
                     <div>
+                        <c:if test="${!empty notDateError}">
+                            <div class="error">${notDateError}</div>
+                        </c:if>
+                        <c:if test="${!empty notIsbnError}">
+                            <div class="error">${notIsbnrror}</div>
+                        </c:if>
+                    </div>
+                    <div>
                         <span>書籍名</span><span class="care care2">必須</span>
                         <c:if test="${!empty bookInfo}">
                             <input type="text" name="title" value="${bookInfo.title}" required>
@@ -70,11 +78,8 @@
                     </div>
                     <div>
                         <span>出版日</span><span class="care care2">必須</span>
-                        <c:if test="${!empty notDateError}">
-                            <div class="error">${notDateError}</div>
-                        </c:if>
                         <c:if test="${!empty bookInfo}">
-                            <input type="text" name="publish_date" value="${bookInfo.publish_date}" required>
+                            <input type="text" name="publish_date" value="${bookInfo.publishDate}" required>
                         </c:if>
                         <c:if test="${empty bookInfo}">
                             <input type="text" name="publish_date" required placeholder="YYYYMMDD" required>
@@ -82,9 +87,6 @@
                     </div>
                     <div>
                         <span>ISBN</span><span class="care care1">任意</span>
-                        <c:if test="${!empty notIsbnError}">
-                            <div class="error">${notIsbnrror}</div>
-                        </c:if>
                         <c:if test="${!empty bookInfo}">
                             <input type="text" name="isbn" value="${bookInfo.Isbn}">
                         </c:if>
