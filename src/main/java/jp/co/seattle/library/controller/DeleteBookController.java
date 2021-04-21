@@ -47,6 +47,7 @@ public class DeleteBookController {
         //booksテーブルから該当する書籍データを削除
         booksService.deleteBook(bookId);
 
+        model.addAttribute("bookList", booksService.getBookList());
         return "home";
 
     }

@@ -1,5 +1,7 @@
 package jp.co.seattle.library.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -53,6 +55,9 @@ public class AddBooksController {
             @RequestParam("author") String author,
             @RequestParam("publisher") String publisher,
             @RequestParam("thumbnail") MultipartFile file,
+            @RequestParam("publish_date") String publishDate,
+            @RequestParam("isbn") String isbn,
+            @RequestParam("description") String description,
             Model model) {
         logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
 
@@ -61,6 +66,28 @@ public class AddBooksController {
         bookInfo.setTitle(title);
         bookInfo.setAuthor(author);
         bookInfo.setPublisher(publisher);
+        bookInfo.setPublishDate(publishDate);
+        bookInfo.setIsbn(isbn);
+        bookInfo.setDescription(description);
+
+        //出版日のバリデーションチェック
+        try {
+            // 日付チェック
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            sdf.setLenient(false);
+            sdf.parse(publishDate);
+            bookInfo.setPublishDate(publishDate);
+
+        } catch (ParseException ex) {
+            model.addAttribute("notDateError", "出版日はYYYYMMDDの形式で入力してください");
+            return "addBook";
+        }
+
+        //ISBNのバリデーションチェック
+        if (!(bookInfo.getIsbn().matches("([0-9]{10}|[0-9]{13})?"))) {
+            model.addAttribute("notIsbnError", "ISBNは10桁もしくは13桁の数字で入力してください");
+            return "addBook";
+        }
 
         // クライアントのファイルシステムにある元のファイル名を設定する
         String thumbnail = file.getOriginalFilename();
@@ -91,6 +118,7 @@ public class AddBooksController {
 
         // TODO 登録した書籍の詳細情報を表示するように実装
         //  詳細画面に遷移する
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(booksService.getBookId()));
         return "details";
     }
 
