@@ -1,5 +1,6 @@
 package jp.co.seattle.library.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -77,7 +78,7 @@ public class AddBooksController {
             sdf.parse(publishDate);
             bookInfo.setPublishDate(publishDate);
 
-        } catch (Exception ex) {
+        } catch (ParseException ex) {
             model.addAttribute("notDateError", "出版日はYYYYMMDDの形式で入力してください");
             return "addBook";
         }
