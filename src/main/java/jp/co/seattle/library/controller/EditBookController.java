@@ -46,12 +46,15 @@ public class EditBookController {
     }
 
     /**
-     * 書籍情報を登録する
+     * 書籍情報を更新する
      * @param locale ロケール情報
      * @param title 書籍名
      * @param author 著者名
      * @param publisher 出版社
      * @param file サムネイルファイル
+     * @param publishDate 出版日
+     * @param isbn ISBN
+     * @param description 書籍説明
      * @param model モデル
      * @return 遷移先画面
      */
@@ -98,11 +101,11 @@ public class EditBookController {
             return "addBook";
         }
 
-        // クライアントのファイルシステムにある元のファイル名を設定する
-        String thumbnail = file.getOriginalFilename();
 
         if (!file.isEmpty()) {
             try {
+                // クライアントのファイルシステムにある元のファイル名を設定する
+                String thumbnail = file.getOriginalFilename();
                 // サムネイル画像をアップロード
                 String fileName = thumbnailService.uploadThumbnail(thumbnail, file);
                 // URLを取得
