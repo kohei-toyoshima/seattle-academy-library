@@ -30,13 +30,16 @@ public class BookDetailsInfo {
 
     private String description;
 
+    private boolean isBorrowing;
+
 
     public BookDetailsInfo() {
 
     }
 
     public BookDetailsInfo(int bookId, String title, String author, String publisher,
-            String thumbnailUrl, String thumbnailName, String publishDate, String isbn, String description) {
+            String thumbnailUrl, String thumbnailName, String publishDate, String isbn, String description,
+            boolean isBorrowing) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -46,6 +49,7 @@ public class BookDetailsInfo {
         this.publishDate = publishDate;
         this.isbn = isbn;
         this.description = description;
+        this.isBorrowing = isBorrowing;
     }
 
 }

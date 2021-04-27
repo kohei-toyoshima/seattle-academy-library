@@ -39,18 +39,17 @@ public class BrrowBookController {
             Model model) {
         logger.info("Welcome delete! The client locale is {}.", locale);
 
-        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
-
         //貸し出し中か確認する
         if (booksService.isBorrowing(bookId)) {
-            model.addAttribute("borrowingMessage", "この本は貸し出し中です");
+            model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
+            model.addAttribute("borrowingMessage", "この本は貸出し中です");
             return "details";
         }
 
         //borrowテーブルに追加する
         booksService.rentBook(bookId);
 
-        model.addAttribute("bookList", booksService.getBookList());
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
         return "details";
 
     }
@@ -71,17 +70,17 @@ public class BrrowBookController {
             Model model) {
         logger.info("Welcome delete! The client locale is {}.", locale);
 
-        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
-
         //貸し出し中か確認する
         if (!(booksService.isBorrowing(bookId))) {
-            model.addAttribute("borrowingMessage", "この本は返却済です");
+            model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
+            model.addAttribute("borrowingMessage", "この本は返却済みです");
             return "details";
         }
 
         ////borrowテーブルから削除
         booksService.returnBook(bookId);
 
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
         return "details";
 
     }
