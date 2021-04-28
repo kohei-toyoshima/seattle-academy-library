@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,8 @@ public class BooksService {
                 + bookId;
 
         BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+
+        bookDetailsInfo.setBorrowing(isBorrowing(bookId));
 
         return bookDetailsInfo;
     }
@@ -116,6 +119,41 @@ public class BooksService {
                 + bookInfo.getThumbnailUrl() + "', thumbnail_name = '"
                 + bookInfo.getThumbnailName() + "', upd_date = sysdate() WHERE id = " + bookInfo.getBookId();
 
+        jdbcTemplate.update(sql);
+    }
+
+    /**
+     * 書籍が貸し出し中の場合true
+     * @param bookId
+     * @return true or false
+     */
+    public boolean isBorrowing(int bookId) {
+        String sql = "select book_id from borrow where book_id = " + bookId;
+        try {
+            jdbcTemplate.queryForObject(sql, Integer.class);
+            return true;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return false;
+        }
+    }
+
+    /**
+     * 書籍の貸し出し処理
+     * @param bookId
+     * 
+     */
+    public void rentBook(int bookId) {
+        String sql = "insert into borrow (book_id) values (" + bookId + ")";
+        jdbcTemplate.update(sql);
+    }
+
+    /**
+     * 書籍の返却処理
+     * @param bookId
+     * 
+     */
+    public void returnBook(int bookId) {
+        String sql = "delete from borrow where book_id =" + bookId;
         jdbcTemplate.update(sql);
     }
 
