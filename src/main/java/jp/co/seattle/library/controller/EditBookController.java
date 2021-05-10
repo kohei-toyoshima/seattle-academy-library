@@ -135,11 +135,11 @@ public class EditBookController {
             bookInfo.setThumbnailName(booksService.getBookInfo(bookId).getThumbnailName());
         }
 
-        //古いサムネイルをminioから削除
-        thumbnailService.deleteUrl(booksService.getBookInfo(bookId).getThumbnailName());
-
         // 書籍情報を新規登録する
         booksService.updateBook(bookInfo);
+
+        //古いサムネイルをminioから削除
+        thumbnailService.deleteUrl(booksService.getBookInfo(bookId).getThumbnailName());
 
         // 編集した書籍の詳細情報を表示するように実装
         //  詳細画面に遷移する
