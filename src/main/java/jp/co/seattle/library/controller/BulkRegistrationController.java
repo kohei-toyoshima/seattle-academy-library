@@ -64,7 +64,7 @@ public class BulkRegistrationController {
 
             // 一行ずつ読み出してList<BookDetailsInfo>型のbookListに格納
             while ((line = br.readLine()) != null) {
-                String[] bookData = line.split(",", 0);
+                String[] bookData = line.split(",", -1);
 
                 BookDetailsInfo bookInfo = new BookDetailsInfo();
 
