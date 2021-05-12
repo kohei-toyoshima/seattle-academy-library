@@ -70,7 +70,7 @@ public class BulkRegistrationController {
 
                 //必須項目、bookData[0]-[3]に値が入っているか
                 if (bookData[0].isEmpty() || bookData[1].isEmpty() || bookData[2].isEmpty() || bookData[3].isEmpty()) {
-                    errorMessage += rowCount + "行目で必要な情報がありません。";
+                    errorMessage += rowCount + "行目で必要な情報がありません。\n";
                     flag = true;
                 }
 
@@ -83,14 +83,14 @@ public class BulkRegistrationController {
                         sdf.parse(bookData[3]);
 
                     } catch (ParseException ex) {
-                        errorMessage += rowCount + "行目の出版日はYYYYMMDDの形式で入力してください。";
+                        errorMessage += rowCount + "行目の出版日はYYYYMMDDの形式で入力してください。\n";
                         flag = true;
                     }
 
                 }
                 if (bookData[4] != null && !(bookData[4].isEmpty())
                         && !(bookData[4].matches("([0-9]{10}|[0-9]{13})?"))) {
-                    errorMessage += rowCount + "行目のISBNは10桁もしくは13桁の数字で入力してください。";
+                    errorMessage += rowCount + "行目のISBNは10桁もしくは13桁の数字で入力してください。\n";
                     flag = true;
                 }
 
