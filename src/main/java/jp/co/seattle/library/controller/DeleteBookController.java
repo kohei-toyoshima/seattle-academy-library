@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.ThumbnailService;
 
 /**
  * 削除コントローラー
@@ -23,6 +24,9 @@ public class DeleteBookController {
 
     @Autowired
     private BooksService booksService;
+
+    private ThumbnailService thumbnailService;
+
 
 
     /**
@@ -47,6 +51,15 @@ public class DeleteBookController {
             model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
             return "details";
         }
+
+        System.out.println(booksService.getBookInfo(bookId).getAuthor());
+        System.out.println(booksService.getBookInfo(bookId).getThumbnailName());
+
+        //サムネイルをminioから削除
+        if (booksService.getBookInfo(bookId).getThumbnailName() != null) {
+            thumbnailService.deleteUrl(booksService.getBookInfo(bookId).getThumbnailName());
+        }
+
 
         booksService.deleteBook(bookId);
 

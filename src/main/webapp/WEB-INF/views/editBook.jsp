@@ -55,7 +55,7 @@
                             <div class="error">${notDateError}</div>
                         </c:if>
                         <c:if test="${!empty notIsbnError}">
-                            <div class="error">${notIsbnrror}</div>
+                            <div class="error">${notIsbnError}</div>
                         </c:if>
                     </div>
                     <div>

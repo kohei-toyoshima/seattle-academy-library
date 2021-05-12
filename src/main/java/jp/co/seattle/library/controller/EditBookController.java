@@ -84,6 +84,12 @@ public class EditBookController {
 
         //出版日のバリデーションチェック
         try {
+            if (!(publishDate.matches("^[0-9]+$"))) {
+                model.addAttribute("notDateError", "出版日はYYYYMMDDの形式で入力してください");
+                model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
+                return "editBook";
+            }
+
             // 日付チェック
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             sdf.setLenient(false);
@@ -92,13 +98,15 @@ public class EditBookController {
 
         } catch (ParseException ex) {
             model.addAttribute("notDateError", "出版日はYYYYMMDDの形式で入力してください");
-            return "addBook";
+            model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
+            return "editBook";
         }
 
         //ISBNのバリデーションチェック
         if (!(bookInfo.getIsbn().matches("([0-9]{10}|[0-9]{13})?"))) {
             model.addAttribute("notIsbnError", "ISBNは10桁もしくは13桁の数字で入力してください");
-            return "addBook";
+            model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
+            return "editBook";
         }
 
 
@@ -118,13 +126,20 @@ public class EditBookController {
 
                 // 異常終了時の処理
                 logger.error("サムネイルアップロードでエラー発生", e);
-                model.addAttribute("bookDetailsInfo", bookInfo);
+                model.addAttribute("bookInfo", bookInfo);
                 return "editBook";
             }
+
+        } else {
+            bookInfo.setThumbnailUrl(booksService.getBookInfo(bookId).getThumbnailUrl());
+            bookInfo.setThumbnailName(booksService.getBookInfo(bookId).getThumbnailName());
         }
 
         // 書籍情報を新規登録する
         booksService.updateBook(bookInfo);
+
+        //古いサムネイルをminioから削除
+        thumbnailService.deleteUrl(booksService.getBookInfo(bookId).getThumbnailName());
 
         // 編集した書籍の詳細情報を表示するように実装
         //  詳細画面に遷移する
