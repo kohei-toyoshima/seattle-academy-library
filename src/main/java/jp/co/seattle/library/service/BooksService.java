@@ -157,4 +157,30 @@ public class BooksService {
         jdbcTemplate.update(sql);
     }
 
+    /**
+     * 書籍名の完全一致検索処理
+     * @param search
+     * 
+     */
+    public List<BookInfo> perfectMatchSearchBook(String search) {
+        String sql = "SELECT id, title, author, publisher, publish_date, thumbnail_url FROM books WHERE title LIKE '"
+                + search + "'order by title asc";
+        List<BookInfo> searchBookList = jdbcTemplate.query(sql, new BookInfoRowMapper());
+        return searchBookList;
+
+    }
+
+    /**
+     * 書籍名の部分一致検索処理
+     * @param search
+     * 
+     */
+    public List<BookInfo> partMatchSearchBook(String search) {
+        String sql = "SELECT id, title, author, publisher, publish_date, thumbnail_url FROM books WHERE title LIKE '%"
+                + search + "%' order by title asc";
+        List<BookInfo> searchBookList = jdbcTemplate.query(sql, new BookInfoRowMapper());
+            return searchBookList;
+
+    }
+
 }

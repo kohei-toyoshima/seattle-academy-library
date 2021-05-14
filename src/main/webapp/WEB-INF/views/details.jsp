@@ -80,18 +80,24 @@
                 </div>
             </div>
         </div>
-        <div class="edtDelBookBtn_box">
+       <div class="edtDelBookBtn_box">
             <form method="post" action="rentBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
+                <c:if test="${!bookDetailsInfo.borrowing}">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
+                </c:if>
             </form>
             <form method="post" action="returnBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook">返却</button>
+                 <c:if test="${bookDetailsInfo.borrowing}">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook">返却</button>
+                </c:if>
             </form>
             <form method="post" action="editBook">
                 <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
             </form>
             <form method="post" action="deleteBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_deleteBook">削除</button>
+                <c:if test="${!bookDetailsInfo.borrowing}">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_deleteBook">削除</button>
+                </c:if>
             </form>
         </div>
         <div>

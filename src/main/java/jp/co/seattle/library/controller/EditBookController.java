@@ -121,6 +121,10 @@ public class EditBookController {
                 model.addAttribute("bookDetailsInfo", bookInfo);
                 return "editBook";
             }
+
+        } else {
+            bookInfo.setThumbnailName(booksService.getBookInfo(bookId).getThumbnailName());
+            bookInfo.setThumbnailUrl(booksService.getBookInfo(bookId).getThumbnailUrl());
         }
 
         // 書籍情報を新規登録する
