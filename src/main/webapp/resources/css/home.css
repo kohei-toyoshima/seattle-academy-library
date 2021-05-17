@@ -66,7 +66,9 @@ input {
 
 /* ここから追加 */
 .search_box {
-    position: relative;
+    position: absolite;
+    top:10px;
+    right:30px;
     margin-left: -5px;
 }
 
@@ -101,6 +103,8 @@ input {
     display: inline-block;
     margin-right: 10px;
     line-height: 1.5;
+    
+   
 }
 .book_thumnail {
     position: relative;
@@ -128,16 +132,31 @@ img.book_noimg, img.book_img{
 .book_title {
     font-size: 16px;
     text-align: center;
+    
+    width: 200px; /* 要素の横幅を指定 */
+    white-space: nowrap; /* 横幅のMAXに達しても改行しない */
+    text-overflow: ellipsis; /* 「…」と省略 */
+    overflow: hidden; /* ハミ出した部分を隠す */
 }
 
 .book_author {
     font-size: 13px;
     text-align: center;
     margin-bottom: 5px;
+    
+    width: 200px; /* 要素の横幅を指定 */
+    white-space: nowrap; /* 横幅のMAXに達しても改行しない */
+    text-overflow: ellipsis; /* 「…」と省略 */
+    overflow: hidden; /* ハミ出した部分を隠す */
 }
 
 .book_publisher, .book_publish_date {
     font-size: 12px;
+    
+    width: 200px; /* 要素の横幅を指定 */
+    white-space: nowrap; /* 横幅のMAXに達しても改行しない */
+    text-overflow: ellipsis; /* 「…」と省略 */
+    overflow: hidden; /* ハミ出した部分を隠す */
 }
 
 a.btn_add_book,a.btn_bulk_book, button.btn_addBook,button.btn_editBook, button.btn_deleteBook,button.btn_rentBook,button.btn_returnBook,button.btn_bulkRegist {
@@ -202,6 +221,10 @@ a:hover, button:hover {
     width: 99.2%;
     text-indent: 1em;
     vertical-align: middle;
+    
+    white-space: nowrap; /* 横幅のMAXに達しても改行しない */
+    text-overflow: ellipsis; /* 「…」と省略 */
+    overflow: hidden; /* ハミ出した部分を隠す */
 
 }
 .content_right input:-webkit-autofill {
@@ -285,4 +308,3 @@ hr.border_add {
 .bulk_form .caution p{
 	color:#fa8072;
 }
-

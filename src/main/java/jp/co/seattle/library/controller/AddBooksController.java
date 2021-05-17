@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -111,15 +112,23 @@ public class AddBooksController {
             }
         }
 
-        // 書籍情報を新規登録する
-        booksService.registBook(bookInfo);
+        try {
+            // 書籍情報を新規登録する
+            booksService.registBook(bookInfo);
 
-        model.addAttribute("resultMessage", "登録完了");
+            model.addAttribute("resultMessage", "登録完了");
 
-        // TODO 登録した書籍の詳細情報を表示するように実装
-        //  詳細画面に遷移する
-        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(booksService.getBookId()));
-        return "details";
+            // TODO 登録した書籍の詳細情報を表示するように実装
+            //  詳細画面に遷移する
+            model.addAttribute("bookDetailsInfo", booksService.getBookInfo(booksService.getBookId()));
+            return "details";
+
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("errorMessage", "255文字以内で入力してください");
+            return "addBook";
+
+        }
+
     }
 
 }

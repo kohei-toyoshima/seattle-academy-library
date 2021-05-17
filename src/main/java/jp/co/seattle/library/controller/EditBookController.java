@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -127,13 +128,21 @@ public class EditBookController {
             bookInfo.setThumbnailUrl(booksService.getBookInfo(bookId).getThumbnailUrl());
         }
 
-        // 書籍情報を新規登録する
-        booksService.updateBook(bookInfo);
+        try {
+            // 書籍情報を新規登録する
+            booksService.updateBook(bookInfo);
 
-        // 編集した書籍の詳細情報を表示するように実装
-        //  詳細画面に遷移する
-        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
-        return "details";
+            // 編集した書籍の詳細情報を表示するように実装
+            //  詳細画面に遷移する
+            model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
+            return "details";
+
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("errorMessage", "255文字以内で入力してください");
+            return "details";
+
+        }
+
     }
 
 }

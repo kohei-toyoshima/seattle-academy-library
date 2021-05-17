@@ -13,6 +13,7 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -64,7 +65,7 @@ public class BulkRegistrationController {
 
             // 一行ずつ読み出してList<BookDetailsInfo>型のbookListに格納
             while ((line = br.readLine()) != null) {
-                String[] bookData = line.split(",", 0);
+                String[] bookData = line.split(",", -1);
 
                 BookDetailsInfo bookInfo = new BookDetailsInfo();
 
@@ -126,6 +127,10 @@ public class BulkRegistrationController {
 
         } catch (IOException e) {
             model.addAttribute("errorMessage", "CSVファイル読み込みでエラーが発生しました。");
+            return "bulkRegistration";
+
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("errorMessage", "255文字以内で入力してください");
             return "bulkRegistration";
 
         } catch (Exception e) {

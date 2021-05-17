@@ -119,6 +119,11 @@
                 <button type="submit" id="add-btn" class="btn_addBook">更新</button>
             </div>
         </form>
+        <div>
+            <c:if test="${!empty errorMessage}">
+                <div class="error">${errorMessage}</div>
+            </c:if>
+        </div>
     </main>
 </body>
 </html>
