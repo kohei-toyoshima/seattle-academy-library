@@ -10,6 +10,8 @@
 <link href="<c:url value="/resources/css/default.css" />" rel="stylesheet" type="text/css">
 <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 <link href="<c:url value="/resources/css/home.css" />" rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="resources/js/list.js"></script>
 </head>
 <body class="wrapper">
     <header>
@@ -28,6 +30,17 @@
         <h1>Home</h1>
         <a href="<%= request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a>
         <a href="<%= request.getContextPath()%>/bulkRegistration" class="btn_bulk_book">一括登録</a>
+        <form action="<%=request.getContextPath()%>/deleteBooksBulk" method="post" enctype="multipart/form-data" id="data_upload_form">
+            <button type="submit" class="btn_deleteBook">書籍の削除</button>
+            <input type="hidden" id="delete_books" name="deleteBookList">
+        </form>
+        <button type="submit" class="btn_all_select">全選択</button>
+        <c:if test="${!empty cannotDelete}">
+            <div class="error_msg">${cannotDelete}</div>
+        </c:if>
+        <c:if test="${!empty deleteMessage}">
+            <div class="error_msg">${deleteMessage}</div>
+        </c:if>
 
         <div class="content_body">
             <c:if test="${!empty resultMessage}">
@@ -37,6 +50,7 @@
                 <div class="booklist">
                     <c:forEach var="bookInfo" items="${bookList}">
                         <div class="books">
+                            <input type="checkbox" name="check" value="${bookInfo.bookId}" class="checkbox">
                             <form method="post" class="book_thumnail" action="<%=request.getContextPath()%>/details">
                                 <a href="javascript:void(0)" onclick="this.parentNode.submit();">
                                     <c:if test="${bookInfo.thumbnail == 'null'}">
