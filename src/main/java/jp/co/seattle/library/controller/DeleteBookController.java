@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,7 +58,7 @@ public class DeleteBookController {
         booksService.deleteBook(bookId);
 
         //サムネイルをminioから削除
-        if (thumbnailName != null) {
+        if (StringUtils.isEmpty(thumbnailName)) {
             thumbnailService.deleteUrl(thumbnailName);
         }
 
@@ -85,13 +86,18 @@ public class DeleteBookController {
 
         for (int bookId : bookIds) {
             if (!booksService.isBorrowing(bookId)) {
+                String thumbnailName = booksService.getBookInfo(bookId).getThumbnailName();
                 booksService.deleteBook(bookId);
+                if (StringUtils.isEmpty(thumbnailName)) {
+                    thumbnailService.deleteUrl(thumbnailName);
+                }
+                continue;
 
             }
-            if (booksService.isBorrowing(bookId)) {
+
                 deleteBooksCount -= 1;
                 model.addAttribute("cannotDelete", "貸し出し中の書籍は削除されません");
-            }
+
         }
 
         model.addAttribute("bookList", booksService.getBookList());
