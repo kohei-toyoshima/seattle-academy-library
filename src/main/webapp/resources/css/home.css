@@ -101,6 +101,7 @@ input {
     display: inline-block;
     margin-right: 10px;
     line-height: 1.5;
+    margin-bottom: 50px;
 }
 .book_thumnail {
     position: relative;
@@ -128,19 +129,34 @@ img.book_noimg, img.book_img{
 .book_title {
     font-size: 16px;
     text-align: center;
+    
+    width: 200px; /* 要素の横幅を指定 */
+    white-space: nowrap; /* 横幅のMAXに達しても改行しない */
+    text-overflow: ellipsis; /* 「…」と省略 */
+    overflow: hidden; /* ハミ出した部分を隠す */
 }
 
 .book_author {
     font-size: 13px;
     text-align: center;
     margin-bottom: 5px;
+    
+    width: 200px; /* 要素の横幅を指定 */
+    white-space: nowrap; /* 横幅のMAXに達しても改行しない */
+    text-overflow: ellipsis; /* 「…」と省略 */
+    overflow: hidden; /* ハミ出した部分を隠す */
 }
 
 .book_publisher, .book_publish_date {
     font-size: 12px;
+    
+    width: 200px; /* 要素の横幅を指定 */
+    white-space: nowrap; /* 横幅のMAXに達しても改行しない */
+    text-overflow: ellipsis; /* 「…」と省略 */
+    overflow: hidden; /* ハミ出した部分を隠す */
 }
 
-a.btn_add_book,a.btn_bulk_book, button.btn_addBook,button.btn_editBook, button.btn_deleteBook,button.btn_rentBook,button.btn_returnBook,button.btn_bulkRegist {
+a.btn_add_book,a.btn_bulk_book, button.btn_addBook,button.btn_editBook, button.btn_deleteBook,button.btn_rentBook,button.btn_returnBook,button.btn_bulkRegist,button.btn_all_select {
     display: inline-block;
     font-size: 16px;
     font-weight: bold;
@@ -171,6 +187,10 @@ button.btn_returnBook {
 }
 button.btn_bulkRegist {
 	background-color: #FF9966;
+}
+
+button.btn_all_select {
+    background-color: #165e83;
 }
 
 a:hover, button:hover {

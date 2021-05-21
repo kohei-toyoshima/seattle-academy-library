@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,20 +53,56 @@ public class DeleteBookController {
             return "details";
         }
 
-        System.out.println(booksService.getBookInfo(bookId).getAuthor());
-        System.out.println(booksService.getBookInfo(bookId).getThumbnailName());
-
-        //サムネイルをminioから削除
-        if (booksService.getBookInfo(bookId).getThumbnailName() != null) {
-            thumbnailService.deleteUrl(booksService.getBookInfo(bookId).getThumbnailName());
-        }
-
+        String thumbnailName = booksService.getBookInfo(bookId).getThumbnailName();
 
         booksService.deleteBook(bookId);
+
+        //サムネイルをminioから削除
+        if (StringUtils.isEmpty(thumbnailName)) {
+            thumbnailService.deleteUrl(thumbnailName);
+        }
 
         model.addAttribute("bookList", booksService.getBookList());
         return "home";
 
+    }
+
+    /**
+     * 選択した書籍を一括削除
+     * @param locale
+     * @param bookIds 削除したい書籍のリスト
+     * @param model
+     * @return ホーム画面に遷移
+     */
+    @Transactional
+    @RequestMapping(value = "/deleteBooksBulk", method = RequestMethod.POST)
+    public String deleteBooksBulk(
+            Locale locale,
+            @RequestParam("deleteBookList") Integer[] bookIds,
+            Model model) {
+        logger.info("Welcome deleteBulk! The client locale is {}.", locale);
+
+        int deleteBooksCount = bookIds.length; //削除する書籍の冊数
+
+        for (int bookId : bookIds) {
+            if (!booksService.isBorrowing(bookId)) {
+                String thumbnailName = booksService.getBookInfo(bookId).getThumbnailName();
+                booksService.deleteBook(bookId);
+                if (StringUtils.isEmpty(thumbnailName)) {
+                    thumbnailService.deleteUrl(thumbnailName);
+                }
+                continue;
+
+            }
+
+                deleteBooksCount -= 1;
+                model.addAttribute("cannotDelete", "貸し出し中の書籍は削除されません");
+
+        }
+
+        model.addAttribute("bookList", booksService.getBookList());
+        model.addAttribute("deleteMessage", deleteBooksCount + "冊の書籍を削除しました");
+        return "home";
     }
 
 }
