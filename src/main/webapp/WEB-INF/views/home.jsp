@@ -12,6 +12,7 @@
 <link href="<c:url value="/resources/css/home.css" />" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="resources/js/list.js"></script>
+<script src="resources/js/sort.js"></script>
 </head>
 <body class="wrapper">
     <header>
@@ -35,6 +36,14 @@
             <input type="hidden" id="delete_books" name="deleteBookList">
         </form>
         <button type="submit" class="btn_all_select">全選択</button>
+        <select class="sort_item">
+            <option value="title">書籍名</option>
+            <option value="author">著者名</option>
+            <option value="publisher">出版社名</option>
+            <option value="publishDate">出版日</option>
+        </select>
+        <input type="radio" class="order" name="sort" value="asc" checked="checked">昇順
+        <input type="radio" class="order" name="sort" value="desc">降順
         <c:if test="${!empty cannotDelete}">
             <div class="error_msg">${cannotDelete}</div>
         </c:if>
@@ -63,10 +72,10 @@
                             <input type="hidden" name="bookId" value="${bookInfo.bookId}">
                             </form>
                             <ul>
-                                <li class="book_title">${bookInfo.title}</li>
-                                <li class="book_author">${bookInfo.author}(著)</li>
-                                <li class="book_publisher">出版社:${bookInfo.publisher}</li>
-                                <li class="book_publish_date">出版日:${bookInfo.publishDate}</li>
+                                <li class="book_title" value="${bookInfo.title}">${bookInfo.title}</li>
+                                <li class="book_author" value="${bookInfo.author}">${bookInfo.author}(著)</li>
+                                <li class="book_publisher" value="${bookInfo.publisher}">出版社:${bookInfo.publisher}</li>
+                                <li class="book_publish_date" value="${bookInfo.publishDate}">出版日:${bookInfo.publishDate}</li>
                                 
                             </ul>
                         </div>
